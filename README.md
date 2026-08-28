@@ -97,6 +97,42 @@ The Wasserstein-DRO order was modestly more conservative than SAA, paying about 
 
 No universal DRO dominance claim is made.
 
+## GitHub Actions validation
+
+A GitHub-hosted Ubuntu 24.04 runner validated the repository on:
+
+```text
+Python  3.12.14
+NumPy   2.5.2
+```
+
+The remote regression suite passed all **6/6 tests**. The dense numerical oracle test, including 20,001 lambda values and 5,001 support points per empirical sample, passed on the runner.
+
+The CI smoke configuration used:
+
+```text
+historical samples     60
+nominal test samples  500
+shifted test samples  500
+demand shift            0.8
+radius repetitions       25
+```
+
+Runner-observed result:
+
+```text
+calibrated W1 radius  5.7655
+DRO order             51
+DRO dual lambda       15.276
+
+method             order   nominal cost   shifted cost   shifted stockout
+SAA                   47       197.41         241.33          62.80%
+Box robust            74       255.10         255.39          12.20%
+Wasserstein DRO       51       198.16         232.03          53.80%
+```
+
+On this runner fixture, Wasserstein DRO paid a small nominal-cost premium relative to SAA while reducing shifted expected cost and shifted stockout frequency. Box robust was substantially more conservative. These are fixed-fixture validation measurements, not a universal DRO-dominance claim.
+
 ## Tests
 
 - exact empirical W1 hand check;
